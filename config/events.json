@@ -1,0 +1,22 @@
+{
+  "_doc": [
+    "Calendrier d'événements pour le bot. Heures en America/New_York (heure d'été/hiver gérée).",
+    "Intégrés au code : EIA (mer 10:30), API (mar 16:30), NFP (1er ven. 8:30), FOMC 2026 (14:00).",
+    "events      : événements ponctuels, ex. OPEP+ : {\"name\": \"OPEC+\", \"time_ny\": \"2026-12-03 09:00\"}.",
+    "fomc_dates  : dates de décision FOMC supplémentaires (AAAA-MM-JJ, 14:00 NY).",
+    "skip        : annule un événement : \"AAAA-MM-JJ NOM\" (ex. \"2026-11-25 EIA\") ou \"AAAA-MM-JJ\" seul pour toute la journée (jour férié).",
+    "shift       : décale un événement : {\"2026-11-25 EIA\": \"2026-11-25 12:00\"} (ancienne clé -> nouvelle heure NY).",
+    "before_min / after_min : largeur de la fenêtre no_trade (défaut 5 avant, 2 après).",
+    "Les clés commençant par _ sont ignorées. Le bot relit ce fichier à chaque cycle.",
+    "Biais manuel : créer config/bias_override.json (voir bias_override.example.json), ignoré une fois 'until' dépassé.",
+    "ATTENTION : les dates FOMC 2027 ci-dessous sont à vérifier sur le calendrier officiel de la Fed."
+  ],
+  "events": [],
+  "fomc_dates": ["2027-01-27", "2027-03-17", "2027-04-28", "2027-06-09",
+                 "2027-07-28", "2027-09-15", "2027-10-27", "2027-12-15"],
+  "skip": [],
+  "shift": {},
+  "_exemple_events": [{"name": "OPEC+", "time_ny": "2026-12-03 09:00"}],
+  "_exemple_skip": ["2026-11-25 EIA"],
+  "_exemple_shift": {"2026-11-25 EIA": "2026-11-26 12:00"}
+}

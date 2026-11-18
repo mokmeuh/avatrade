@@ -222,7 +222,8 @@ class Broker:
     # ------------------------------------------------------------ ordres
     def market_order(self, symbol: str, side: str, volume: float | None = None,
                      barrels: float | None = None, sl: float | None = None,
-                     tp: float | None = None, comment: str = "") -> dict[str, Any]:
+                     tp: float | None = None, comment: str = "",
+                     magic: int | None = None) -> dict[str, Any]:
         self._ensure()
         side = side.lower()
         if side not in ("buy", "sell"):
@@ -248,7 +249,7 @@ class Broker:
             "type": self.mt5.ORDER_TYPE_BUY if side == "buy" else self.mt5.ORDER_TYPE_SELL,
             "price": price,
             "deviation": DEVIATION_POINTS,
-            "magic": MAGIC,
+            "magic": MAGIC if magic is None else int(magic),
             "comment": (comment or "ava-mt5")[:31],
             "type_time": self.mt5.ORDER_TIME_GTC,
             "type_filling": self._filling(info),
@@ -261,7 +262,8 @@ class Broker:
         out["barrels"] = round(volume * info.trade_contract_size, 6)
         return out
 
-    def close_position(self, ticket: int, volume: float | None = None) -> dict[str, Any]:
+    def close_position(self, ticket: int, volume: float | None = None,
+                       magic: int | None = None) -> dict[str, Any]:
         self._ensure()
         found = self.mt5.positions_get(ticket=int(ticket))
         if not found:
@@ -283,7 +285,7 @@ class Broker:
             "type": self.mt5.ORDER_TYPE_SELL if is_buy else self.mt5.ORDER_TYPE_BUY,
             "price": tick.bid if is_buy else tick.ask,
             "deviation": DEVIATION_POINTS,
-            "magic": MAGIC,
+            "magic": MAGIC if magic is None else int(magic),
             "comment": "ava-mt5 close",
             "type_time": self.mt5.ORDER_TIME_GTC,
             "type_filling": self._filling(info),
