@@ -553,8 +553,10 @@ class Bot:
             return
         m1 = self._frame(rates, off)
         bar_utc = pd.Timestamp(bar_time - off * 3600, unit="s", tz="UTC")
+        point = float(self.broker.symbol_spec(sym).get("point") or 0.01)
         for name, params in strats.items():
-            signaux = self.registry[name].signals(m1, params)
+            # Les stratégies dimensionnent leurs garde-fous de coût avec le point du symbole.
+            signaux = self.registry[name].signals(m1, {**params, "point": point})
             for sig in signaux:
                 t = pd.Timestamp(sig.time)
                 t = t.tz_localize("UTC") if t.tzinfo is None else t.tz_convert("UTC")
