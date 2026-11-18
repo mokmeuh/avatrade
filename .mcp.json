@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "ava-mt5": {
+      "command": ".venv\\Scripts\\python.exe",
+      "args": ["-m", "ava_mt5"]
+    }
+  }
+}
